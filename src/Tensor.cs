@@ -7,7 +7,7 @@
 
     public Tensor(int[] dimensions)
     {
-        Dimensions = dimensions;
+        Dimensions = [..dimensions];
 
         int linearSize = 1;
         foreach (int dim in dimensions) linearSize *= dim;
@@ -28,6 +28,13 @@
         return tensor;
     }
 
+    public Tensor Copy()
+    {
+        Tensor copy = new(Dimensions);
+        Data.CopyTo(copy.Data);
+        return copy;
+    }
+
     // Tensor multiplication
     public static Tensor operator *(Tensor a, Tensor b)
     {
@@ -42,7 +49,7 @@
 
         if (a.Dimensions[^1] != b.Dimensions[^2]) throw new ArgumentException("Last 2 tensor dimensions must be a valid matrix multiplication pair");
 
-        int[] resultDims = a.Dimensions;
+        int[] resultDims = [..a.Dimensions];
         resultDims[^1] = b.Dimensions[^1];
 
         Tensor result = new(resultDims);
@@ -75,7 +82,7 @@
 
     public static Tensor Transpose(Tensor t)
     {
-        int[] transposeDims = t.Dimensions;
+        int[] transposeDims = [..t.Dimensions];
         (transposeDims[^2], transposeDims[^1]) = (transposeDims[^1], transposeDims[^2]);
 
         Tensor transpose = new(transposeDims);
@@ -98,5 +105,12 @@
         }
 
         return transpose;
+    }
+
+    public static double Sum(Tensor t)
+    {
+        double result = 0.0;
+        foreach (var value in t.Data) result += value;
+        return result;
     }
 }
