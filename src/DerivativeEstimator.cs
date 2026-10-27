@@ -7,7 +7,6 @@ internal class DerivativeEstimator(int parameterCount, int dimensionCount)
 
     public void EstimateDerivative()
     {
-        Console.WriteLine("\n\nEstimating derivative...\n\n");
         Tensor input = GenerateInput();
         CompositeFunction function = GenerateFunction(input.Dimensions);
 
@@ -18,28 +17,7 @@ internal class DerivativeEstimator(int parameterCount, int dimensionCount)
         for (int i = 0; i < input.LinearSize; ++i) error += Math.Abs(partial.Data[i] - finite.Data[i]);
 
         error /= input.LinearSize;
-
-        Console.Write("Input tensor dimensions: ");
-        for (int i = 0; i < input.Dimensions.Length - 1; ++i) Console.Write($"{input.Dimensions[i]}, ");
-        Console.WriteLine(input.Dimensions[^1]);
-        Console.WriteLine($"Linear size: {input.LinearSize}");
-
-        int totalParamValues = 0;
-        Console.WriteLine("\nParameter tensor dimensions:");
-        for (int p = 0; p < function.Parameters.Length; ++p)
-        {
-            var param = function.Parameters[p];
-            totalParamValues += param.LinearSize;
-
-            for (int i = 0; i < param.Dimensions.Length - 1; ++i) Console.Write($"{param.Dimensions[i]}, ");
-            Console.WriteLine(param.Dimensions[^1]);
-            Console.WriteLine($"Linear size: {param.LinearSize}");
-        }
-
-        Console.WriteLine($"\nTotal parameter values: {totalParamValues}");
-        Console.WriteLine($"Total values involved: {totalParamValues + input.LinearSize}");
-
-        Console.WriteLine($"\nAverage error between partial derivative and finite difference estimate: {error}");
+        Console.WriteLine($"Average error: {error:N5}");
     }
 
     static Tensor ComputePartialDerivative(CompositeFunction function, Tensor input)

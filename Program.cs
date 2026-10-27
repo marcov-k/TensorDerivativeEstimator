@@ -9,9 +9,12 @@ DerivativeEstimator estimator = new(parameterCount, dimensionCount);
 Console.WriteLine("Enter number of trials: ");
 int trials = int.Parse(Console.ReadLine()!);
 
+Console.WriteLine("\n\nEstimating derivatives...\n\n");
 for (int t = 0; t < trials; ++t)
 {
+    Console.Write($"Trail {t + 1}: ");
     estimator.EstimateDerivative();
+    Console.WriteLine();
 }
 
 Console.WriteLine("\n\nPress any key to close...");
